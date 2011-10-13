@@ -35,7 +35,7 @@ double f_2(double x)
 }
 double g_2(double x)
 {
-	return 0;
+	return 3.65*x + 0.8;
 }
 struct funkce_1d func_2 = {
 	f_2,  /* fce vracejici hodnotu */
@@ -72,8 +72,19 @@ int main()
 		fprintf(stdout, "\"funkce\"\t\"pocet kroku\"\t\"metoda\"\t\"integral\"\t\"odhad odchylky\"\t\"skutecna odchylka\"\n");
 		for(j = 0; j < POCTU_KROKU; j++) {
 			N = pocty_kroku[j];
+
 			nazev_metody = "vzorkovani plochy";
 			result = integral_plocha(func, N);
+			delta = fabs(result.I - func->If);
+			fprintf(stdout, "\"%s\"\t%i\t\"%s\"\t%f\t%f\t%f\n", nazev_funkce, N, nazev_metody, result.I, result.s, delta);
+
+			nazev_metody = "vzorkovani funkce";
+			result = integral_funkce(func, N);
+			delta = fabs(result.I - func->If);
+			fprintf(stdout, "\"%s\"\t%i\t\"%s\"\t%f\t%f\t%f\n", nazev_funkce, N, nazev_metody, result.I, result.s, delta);
+
+			nazev_metody = "vzork. fce vyjmutim casti";
+			result = integral_funkce_vyjm(func, N);
 			delta = fabs(result.I - func->If);
 			fprintf(stdout, "\"%s\"\t%i\t\"%s\"\t%f\t%f\t%f\n", nazev_funkce, N, nazev_metody, result.I, result.s, delta);
 		}
