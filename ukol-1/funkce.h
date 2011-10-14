@@ -9,6 +9,9 @@ struct funkce_1d {
 	double (*g)(double);  /* na [a; b] plati: f(x) >= g(x) */
 	double Ig;  /* integral z funkce g na intervalu [a; b] */
 
+	double *mezibody;  /* mnozina bodu a_1 .. a_m kde a < a_1 < ... < a_m = b  (!!! ano, a_m = b) */
+	unsigned int poc_mezibodu;  /* pocet mezibodu (pocet intervalu je pak take m) */
+
 	char *jmeno;  /* symbolicky zapis funkce f */
 	char *jmeno_g;  /* symbolicky zapis funkce g */
 };

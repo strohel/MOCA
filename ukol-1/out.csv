@@ -1,0 +1,43 @@
+"funkce"	"pocet kroku"	"metoda"	"integral"	"odhad odchylky"	"skutecna odchylka"
+"sqrt(x) + 1"	10	"vzorkovani plochy"	8.4	1.83303	0.933333
+"sqrt(x) + 1"	10	"vzorkovani funkce"	8.501572	3.72497	0.831762
+"sqrt(x) + 1"	10	"vzork. fce se skup. vyb."	9.159068	"-nan"	0.174265
+"sqrt(x) + 1"	10	"vzork. fce vyjmutim casti"	9.493803	0.501071	0.16047
+"sqrt(x) + 1"	100	"vzorkovani plochy"	8.88	0.529013	0.453333
+"sqrt(x) + 1"	100	"vzorkovani funkce"	9.538897	0.9985	0.205564
+"sqrt(x) + 1"	100	"vzork. fce se skup. vyb."	9.410973	1.459209	0.077639
+"sqrt(x) + 1"	100	"vzork. fce vyjmutim casti"	9.323998	0.147066	0.009335
+"sqrt(x) + 1"	10000	"vzorkovani plochy"	9.4008	0.049434	0.067467
+"sqrt(x) + 1"	10000	"vzorkovani funkce"	9.354855	0.095456	0.021522
+"sqrt(x) + 1"	10000	"vzork. fce se skup. vyb."	9.342021	0.116325	0.008688
+"sqrt(x) + 1"	10000	"vzork. fce vyjmutim casti"	9.326158	0.014565	0.007175
+"sqrt(x) + 1"	1000000	"vzorkovani plochy"	9.346668	0.00498	0.013335
+"sqrt(x) + 1"	1000000	"vzorkovani funkce"	9.334146	0.009523	0.000813
+"sqrt(x) + 1"	1000000	"vzork. fce se skup. vyb."	9.333573	0.011603	0.00024
+"sqrt(x) + 1"	1000000	"vzork. fce vyjmutim casti"	9.332974	0.00146	0.000359
+"sqrt(x) + 1"	10000000	"vzorkovani plochy"	9.333516	0.001578	0.000183
+"sqrt(x) + 1"	10000000	"vzorkovani funkce"	9.332843	0.003011	0.000491
+"sqrt(x) + 1"	10000000	"vzork. fce se skup. vyb."	9.333128	0.003669	0.000206
+"sqrt(x) + 1"	10000000	"vzork. fce vyjmutim casti"	9.333354	0.000462	0.00002
+					
+"funkce"	"pocet kroku"	"metoda"	"integral"	"odhad odchylky"	"skutecna odchylka"
+"e^x + 2x"	10	"vzorkovani plochy"	2	0.816497	0.718282
+"e^x + 2x"	10	"vzorkovani funkce"	2.261741	1.109268	0.45654
+"e^x + 2x"	10	"vzork. fce se skup. vyb."	2.623953	"-nan"	0.094328
+"e^x + 2x"	10	"vzork. fce vyjmutim casti"	2.714447	0.033326	0.003835
+"e^x + 2x"	100	"vzorkovani plochy"	2.6	0.251058	0.118282
+"e^x + 2x"	100	"vzorkovani funkce"	2.817859	0.314283	0.099578
+"e^x + 2x"	100	"vzork. fce se skup. vyb."	2.734116	1.082693	0.015834
+"e^x + 2x"	100	"vzork. fce vyjmutim casti"	2.719812	0.011558	0.00153
+"e^x + 2x"	10000	"vzorkovani plochy"	2.7455	0.02488	0.027218
+"e^x + 2x"	10000	"vzorkovani funkce"	2.732341	0.02937	0.01406
+"e^x + 2x"	10000	"vzork. fce se skup. vyb."	2.7206	0.028179	0.002318
+"e^x + 2x"	10000	"vzork. fce vyjmutim casti"	2.719248	0.001142	0.000967
+"e^x + 2x"	1000000	"vzorkovani plochy"	2.72162	0.00249	0.003338
+"e^x + 2x"	1000000	"vzorkovani funkce"	2.718818	0.002921	0.000536
+"e^x + 2x"	1000000	"vzork. fce se skup. vyb."	2.718392	0.002807	0.00011
+"e^x + 2x"	1000000	"vzork. fce vyjmutim casti"	2.718283	0.000113	0.000001
+"e^x + 2x"	10000000	"vzorkovani plochy"	2.718317	0.000788	0.000036
+"e^x + 2x"	10000000	"vzorkovani funkce"	2.718059	0.000923	0.000223
+"e^x + 2x"	10000000	"vzork. fce se skup. vyb."	2.718247	0.000887	0.000035
+"e^x + 2x"	10000000	"vzork. fce vyjmutim casti"	2.718292	0.000036	0.00001

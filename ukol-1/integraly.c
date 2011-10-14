@@ -1,11 +1,12 @@
 #include "integraly.h"
 #include "random.h"
 
+#include <assert.h>
 #include <math.h>
 #include <stdio.h>
 
 
-struct vysledek integral_plocha(struct funkce_1d* func, unsigned int N)
+struct vysledek integral_plocha(struct funkce_1d *func, unsigned int N)
 {
 	unsigned int i, hits = 0;
 	double x, y_sample, s_squared;
@@ -26,7 +27,7 @@ struct vysledek integral_plocha(struct funkce_1d* func, unsigned int N)
 	return ret;
 }
 
-struct vysledek integral_funkce(struct funkce_1d* func, unsigned int N)
+struct vysledek integral_funkce(struct funkce_1d *func, unsigned int N)
 {
 	double sum = 0, sum_sq = 0, x, f_x;
 	unsigned int i;
@@ -46,7 +47,7 @@ struct vysledek integral_funkce(struct funkce_1d* func, unsigned int N)
 	return ret;
 }
 
-struct vysledek integral_funkce_vyjm(struct funkce_1d* func, unsigned int N)
+struct vysledek integral_funkce_vyjm(struct funkce_1d *func, unsigned int N)
 {
 	double sum = 0, sum_sq = 0, x, delta_x;
 	unsigned int i;
@@ -63,5 +64,37 @@ struct vysledek integral_funkce_vyjm(struct funkce_1d* func, unsigned int N)
 	ret.I = (func->b - func->a)/((double) N)*sum + func->Ig;
 	/* odchylka = (b-a)*sqrt((E[delta^2] - (E[delta])^2) / N) */
 	ret.s = (func->b - func->a)*sqrt(sum_sq/(((double) N) - pow(sum/((double) N), 2))/((double) N));
+	return ret;
+}
+
+struct vysledek integral_funkce_skup(struct funkce_1d *func, unsigned int N)
+{
+	/* samply rozdelujeme mezi intervaly rovnomere */
+	unsigned int i, N_int;
+	double a_orig, b_orig;
+	struct vysledek ret = {0.0, 0.0}, ret_int;
+
+	a_orig = func->a;   /* Protoze budeme menit strukturu func, musime ji na konci */
+	b_orig = func->b;   /* uvest do puvodniho stavu. */
+	N_int = N / (func->poc_mezibodu);  /* pocet samplovani na kazdy interval */
+	if(N % (func->poc_mezibodu) != 0)
+		fprintf(stderr, "integral_funkce_skup: pocet kroku %i nejde rovnomerne rozdelit mezi %i intervalu!\n",
+		        N, func->poc_mezibodu);
+	assert(func->mezibody[func->poc_mezibodu-1] == func->b);  /* posledni mezibod musi byt b */
+
+	for(i = 0; i < func->poc_mezibodu; i++) {
+		assert(func->a < func->mezibody[i]);  /* mezibody musi monotonne rust */
+		func->b = func->mezibody[i];
+
+		ret_int = integral_funkce(func, N_int);  /* zavolame jiz hotovou metodu s parcialnim intervalem a poctem vzorku */
+		ret.I += ret_int.I;
+		ret.s += ret_int.s*ret_int.s;  /* !!! musime scitat variance (druhe mocniny odchylek) a pak najednou odmocnit) */
+
+		func->a = func->b;  /* prejdeme na dalsi interval */
+	}
+
+	func->a = a_orig;
+	func->b = b_orig;
+	ret.s = sqrt(ret.s);  /* ve skutecnosti jsme scitali variance, musime odmocnit */
 	return ret;
 }
