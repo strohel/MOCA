@@ -21,6 +21,12 @@ struct funkce_nd {
 	unsigned int dim;  /* dimenze definicniho oboru */
 	double (*f)(double *);  /* fce vracejici hodnotu, rozmer pole musi byt presne dim */
 	double *a, *b;  /* vicerozmerny interval, na kterem pocitame (integral) */
+	double If;  /* skutecna (presna) hodnota integralu z f predpocitana analyticky */
 	double c;  /* konstanta omezujici f na [a; b] */
 	char *jmeno;  /* pro hezci vypisy */
 };
+
+/* rekneme C-cku, ze tyto promenne jsou nadefinovany, ovsem fyzicky jsou ulozeny v jine kompilacni
+ * jednotce */
+extern struct funkce_1d func_1, func_2;
+extern struct funkce_nd func_nd;

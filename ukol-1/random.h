@@ -2,4 +2,4 @@
 double rovnom_1d(double a, double b);
 
 /* n-rozmerna nahodna hodnota, hodnotu zapise na adresu out */
-void rvonom_nd(double *a, double *b, unsigned int dim, double *out);
+void rovnom_nd(double *a, double *b, unsigned int dim, double *out);

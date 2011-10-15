@@ -44,5 +44,12 @@ struct vysledek integral_funkce_vyjm(struct funkce_1d *func, unsigned int N);
  */
 struct vysledek integral_funkce_skup(struct funkce_1d *func, unsigned int N);
 
-/* 5. vicerozmerne vzorkovani plochy */
-struct vysledek integral_funkce_dim(struct funkce_nd *func, unsigned int N);
+/**
+ * 5. vicerozmerne vzorkovani plochy
+ *
+ * Predpoklada, ze funkce je zespoda omezana nulou a shora konstantou c, ktera je v @param func.
+ *
+ * @param func popis funkce, ktera se ma integrovat
+ * @param N pocet iteraci
+ */
+struct vysledek integral_plocha_dim(struct funkce_nd *func, unsigned int N);

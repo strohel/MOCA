@@ -4,7 +4,22 @@
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 
+
+/**
+ * Vrati n-dimenzionalni miru n-rozmerneho intervalu. (n == parametr dim)
+ * Musi platit: a_i < b_i \forall i
+ */
+double mira(double *a, double *b, unsigned int dim)
+{
+	unsigned int i;
+	double ret = 1.0;  /* neutralni prvek vuci nasobeni */
+	for(i = 0; i < dim; i++) {
+		ret *= (b[i] - a[i]);
+	}
+	return ret;
+}
 
 struct vysledek integral_plocha(struct funkce_1d *func, unsigned int N)
 {
@@ -101,8 +116,24 @@ struct vysledek integral_funkce_skup(struct funkce_1d *func, unsigned int N)
 	return ret;
 }
 
-struct vysledek integral_funkce_dim(struct funkce_nd *func, unsigned int N)
+struct vysledek integral_plocha_dim(struct funkce_nd *func, unsigned int N)
 {
+	unsigned int i, hits = 0;
+	double y_sample;
+	double *x = malloc(func->dim * sizeof(double));
 	struct vysledek ret;
+
+	for(i = 0; i < N; i++) {
+		/* vygenerujeme nahodny vektor z definicniho oboru a ulozime ho do promenne x */
+		rovnom_nd(func->a, func->b, func->dim, x);
+		y_sample = rovnom_1d(0, func->c);  /* nahodna hodnota z oboru hodnot */
+		if(y_sample <= func->f(x))  /* pricteme jednicku, pokud vzorek padne pod graf funkce */
+			hits++;
+// 		fprintf(stderr, "(x_0,x_1)=(%f;%f) y=%f y_sample=%f hits=%i\n", x[0], x[1], func->f(x), y_sample, hits);
+	}
+
+	/* I = c*PRODUKT(b_i - a_i) * SUM(hits) / N */
+	ret.I = func->c*mira(func->a, func->b, func->dim) * ((double) hits) / N;
+	free(x);
 	return ret;
 }

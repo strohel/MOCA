@@ -1,8 +1,8 @@
 program=integraly
 
 HEAD=integraly.h random.h funkce.h
-SRC=main.c integraly.c random.c
-OBJ=main.o integraly.o random.o
+SRC=main.c integraly.c random.c funkce.c
+OBJ=main.o integraly.o random.o funkce.o
 
 # implicit switches for gcc
 CFLAGS=-O2 -pipe -Wall -Wextra -ggdb
