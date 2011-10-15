@@ -41,9 +41,11 @@ struct vysledek integral_funkce(struct funkce_1d *func, unsigned int N)
 	}
 
 	/* I = (b-a)/N * sum(ksi); */
-	ret.I = (func->b - func->a)/((double) N)*sum;
+	ret.I = (func->b - func->a)/N*sum;
 	/* odchylka = (b-a)*sqrt((E[ksi^2] - (E[ksi])^2) / N) */
-	ret.s = (func->b - func->a)*sqrt(sum_sq/(((double) N) - pow(sum/((double) N), 2))/((double) N));
+	/* E[ksi^2] = sum_sq / N */
+	/* E[ksi] = sum / N */
+	ret.s = (func->b - func->a)*sqrt((sum_sq/N - pow(sum/N, 2))/N);
 	return ret;
 }
 
@@ -96,5 +98,11 @@ struct vysledek integral_funkce_skup(struct funkce_1d *func, unsigned int N)
 	func->a = a_orig;
 	func->b = b_orig;
 	ret.s = sqrt(ret.s);  /* ve skutecnosti jsme scitali variance, musime odmocnit */
+	return ret;
+}
+
+struct vysledek integral_funkce_dim(struct funkce_nd *func, unsigned int N)
+{
+	struct vysledek ret;
 	return ret;
 }

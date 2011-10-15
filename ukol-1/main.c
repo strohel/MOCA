@@ -6,6 +6,7 @@
 
 #define FUNKCI_1D 2
 #define POCTU_KROKU 5
+#define METOD 4
 
 
 /* zadani vstupnich funkci */
@@ -62,12 +63,18 @@ struct funkce_1d func_2 = {
 int main()
 {
 	struct funkce_1d *testovane_1d_funkce[FUNKCI_1D] = {&func_1, &func_2};
+	unsigned int pocty_kroku[POCTU_KROKU] = {10, 100, 10000, 1000000, 10000000}; /* tyto pocty kroku budeme zkouset */
+
+	/* nasledujici zruda je array funkci (metod), ktere pocitaji integraly */
+	struct vysledek (*metody[])(struct funkce_1d *, unsigned int) =
+		{integral_plocha, integral_funkce, integral_funkce_skup, integral_funkce_vyjm};
+	char *nazvy_metod[METOD] =
+		{"vzork. plochy", "vzork. funkce", "vzork. fce se skup. vyb.", "vzork. fce vyjmutim casti"};
+
 	struct funkce_1d *func;
 	struct vysledek result;
-	unsigned int pocty_kroku[POCTU_KROKU] = {10, 100, 10000, 1000000, 10000000}; /* tyto pocty kroku budeme zkouset */
-	unsigned int i, j, N;
+	unsigned int i, j, k, N;
 	char *nazev_funkce, *nazev_metody;
-	double delta;
 
 	/* vsechny funkce, pocty kroku a metody pro jednorozmerne funkce */
 	for(i = 0; i < FUNKCI_1D; i++) {
@@ -80,35 +87,27 @@ int main()
 		for(j = 0; j < func->poc_mezibodu; j++) {
 			fprintf(stderr, "; %f", func->mezibody[j]);
 		}
-		fprintf(stderr, ")\n");
+		fprintf(stderr, ") na kazdy interval je stejny pocet vzorku\n");
 
-		fprintf(stdout, "\"funkce\"\t\"pocet kroku\"\t\"metoda\"\t\"integral\"\t\"odhad odchylky\"\t\"skutecna odchylka\"\n");
+		// vypiseme hlavicku
+		fprintf(stdout, "\"pocet kroku\"");
+		for(k = 0; k < METOD; k++) {
+			nazev_metody = nazvy_metod[k];
+			fprintf(stdout, "\t\"%s\"\ts", nazev_metody);
+		}
+		fprintf(stdout, "\n");
+
 		for(j = 0; j < POCTU_KROKU; j++) {
 			N = pocty_kroku[j];
 
-			nazev_metody = "vzorkovani plochy";
-			srand(42);  /* nastavime nahodny generator na stejny seed pro reproducibilitu vysledku */
-			result = integral_plocha(func, N);
-			delta = fabs(result.I - func->If);
-			fprintf(stdout, "\"%s\"\t%i\t\"%s\"\t%f\t%f\t%f\n", nazev_funkce, N, nazev_metody, result.I, result.s, delta);
-
-			nazev_metody = "vzorkovani funkce";
-			srand(42);  /* nastavime nahodny generator na stejny seed pro reproducibilitu vysledku */
-			result = integral_funkce(func, N);
-			delta = fabs(result.I - func->If);
-			fprintf(stdout, "\"%s\"\t%i\t\"%s\"\t%f\t%f\t%f\n", nazev_funkce, N, nazev_metody, result.I, result.s, delta);
-
-			nazev_metody = "vzork. fce se skup. vyb.";
-			srand(42);  /* nastavime nahodny generator na stejny seed pro reproducibilitu vysledku */
-			result = integral_funkce_skup(func, N);
-			delta = fabs(result.I - func->If);
-			fprintf(stdout, "\"%s\"\t%i\t\"%s\"\t%f\t%f\t%f\n", nazev_funkce, N, nazev_metody, result.I, result.s, delta);
-
-			nazev_metody = "vzork. fce vyjmutim casti";
-			srand(42);  /* nastavime nahodny generator na stejny seed pro reproducibilitu vysledku */
-			result = integral_funkce_vyjm(func, N);
-			delta = fabs(result.I - func->If);
-			fprintf(stdout, "\"%s\"\t%i\t\"%s\"\t%f\t%f\t%f\n", nazev_funkce, N, nazev_metody, result.I, result.s, delta);
+			fprintf(stdout, "%10i", N);  /* pocet kroku */
+			for(k = 0; k < METOD; k++) {
+				nazev_metody = nazvy_metod[k];
+				srand(42);  /* nastavime nahodny generator na stejny seed pro reproducibilitu vysledku */
+				result = metody[k](func, N);
+				fprintf(stdout, "\t%8f\t%8f", result.I, result.s);
+			}
+			fprintf(stdout, "\n");
 		}
 		fprintf(stderr, "\n");
 	}

@@ -20,7 +20,7 @@ struct funkce_1d {
 struct funkce_nd {
 	unsigned int dim;  /* dimenze definicniho oboru */
 	double (*f)(double *);  /* fce vracejici hodnotu, rozmer pole musi byt presne dim */
-	double *a, *b;  /* vicerozmerny intergal, na kterem pocitame (integral) */
+	double *a, *b;  /* vicerozmerny interval, na kterem pocitame (integral) */
 	double c;  /* konstanta omezujici f na [a; b] */
 	char *jmeno;  /* pro hezci vypisy */
 };
