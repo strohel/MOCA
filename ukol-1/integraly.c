@@ -37,7 +37,7 @@ struct vysledek integral_plocha(struct funkce_1d *func, unsigned int N)
 	/* I = c*(b - a)/N * sum(ksi_i) */
 	ret.I = func->c*(func->b - func->a)/((double) N) * ((double) hits);
 	/* v nasledujicim vyuzivame toho, ze ksi_i^2 == ksi_i, nemusime si tudiz delat sumu druhych mocnin */
-	s_squared = 1.0/(N - 1.0)*(hits - pow(hits, 2)/N);  /* vyberovy rozptyl thety (promenne hits) */
+	s_squared = ((double) hits)/N - pow(((double) hits)/N, 2);  /* vyberovy rozptyl ksi (promenne hits) */
 	ret.s = func->c*(func->b - func->a)*sqrt(s_squared/N);
 	return ret;
 }
@@ -119,7 +119,7 @@ struct vysledek integral_funkce_skup(struct funkce_1d *func, unsigned int N)
 struct vysledek integral_plocha_dim(struct funkce_nd *func, unsigned int N)
 {
 	unsigned int i, hits = 0;
-	double y_sample;
+	double y_sample, s_squared;
 	double *x = malloc(func->dim * sizeof(double));
 	struct vysledek ret;
 
@@ -129,11 +129,15 @@ struct vysledek integral_plocha_dim(struct funkce_nd *func, unsigned int N)
 		y_sample = rovnom_1d(0, func->c);  /* nahodna hodnota z oboru hodnot */
 		if(y_sample <= func->f(x))  /* pricteme jednicku, pokud vzorek padne pod graf funkce */
 			hits++;
-// 		fprintf(stderr, "(x_0,x_1)=(%f;%f) y=%f y_sample=%f hits=%i\n", x[0], x[1], func->f(x), y_sample, hits);
 	}
+	free(x);
 
 	/* I = c*PRODUKT(b_i - a_i) * SUM(hits) / N */
 	ret.I = func->c*mira(func->a, func->b, func->dim) * ((double) hits) / N;
-	free(x);
+	/* s^2 = c^2 * PRODUKT((b_i - a_i)^2) / N * ( E[ksi^2] - (E[ksi])^2 ) */
+	/* s^2 = c^2 * PRODUKT((b_i - a_i)^2) / N * ( E[ksi^1] - (E[ksi])^2 ) */ /* ksi_i^2 == ksi_i */
+	/*   s = c   * PRODUKT(b_i - a_i) * sqrt( (E[ksi^1] - (E[ksi])^2) / N ) */
+	s_squared = ((double) hits)/N - pow(((double) hits)/N, 2);  /* vyberovy rozptyl ksi (promenne hits) */
+	ret.s = func->c*mira(func->a, func->b, func->dim) * sqrt(s_squared/N);
 	return ret;
 }

@@ -1,5 +1,6 @@
 #include "integraly.h"
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -18,7 +19,7 @@ int main()
 	struct vysledek (*metody[])(struct funkce_1d *, unsigned int) =
 		{integral_plocha, integral_funkce, integral_funkce_skup, integral_funkce_vyjm};
 	char *nazvy_metod[METOD] =
-		{"plocha", "funkce", "skup._vyb.", "vyjmuti_casti"};
+		{"vzork_plochy", "vzork_funkce", "fce_skup_vyb", "vyjmuti_casti"};
 
 	struct funkce_1d *func;
 	struct vysledek result;
@@ -42,7 +43,7 @@ int main()
 		fprintf(stdout, "         N");
 		for(k = 0; k < METOD; k++) {
 			nazev_metody = nazvy_metod[k];
-			fprintf(stdout, "   %13s     s", nazev_metody);
+			fprintf(stdout, "   %13s     s      delta", nazev_metody);
 		}
 		fprintf(stdout, "\n");
 
@@ -54,7 +55,7 @@ int main()
 				nazev_metody = nazvy_metod[k];
 				srand(42);  /* nastavime nahodny generator na stejny seed pro reproducibilitu vysledku */
 				result = metody[k](func, N);
-				fprintf(stdout, " %10f %10f", result.I, result.s);
+				fprintf(stdout, " %10f %10f %10f", result.I, result.s, fabs(result.I - func->If));
 			}
 			fprintf(stdout, "\n");
 		}
@@ -66,11 +67,12 @@ int main()
 	        func_nd.jmeno, func_nd.a[0], func_nd.a[1], func_nd.b[0], func_nd.b[1]);
 	fprintf(stderr, "Na intervalu ma platit: 0 <= f(x, y) <= %f\n", func_nd.c);
 	fprintf(stderr, "Analyticky spocitana hodnota integralu = %f\n", func_nd.If);
-	fprintf(stdout, "         N     plocha          s      delta\n");
+	fprintf(stdout, "         N    vzork_plochy     s      delta\n");
 	for(j = 0; j < POCTU_KROKU; j++) {
 		N = pocty_kroku[j];
+		srand(42);  /* nastavime nahodny generator na stejny seed pro reproducibilitu vysledku */
 		result = integral_plocha_dim(&func_nd, N);
-		fprintf(stdout, "%10i %10f %10f\n", N, result.I, result.s);
+		fprintf(stdout, "%10i %10f %10f %10f\n", N, result.I, result.s, fabs(result.I - func_nd.If));
 	}
 
 	return 0;

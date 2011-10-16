@@ -1,0 +1,60 @@
+Zhodnoceni ukolu na MOCAcv - Matej Laitl
+========================================
+
+Ukazkovy vystup programu
+------------------------
+
+Jdeme integrovat funkci f(x) = sqrt(x) + 1 na intervalu [0.000000; 4.000000]
+Na intervalu by melo platit: a) f(x) <= 3.000000  b) g(x) = x/2 + 1 <= f(x)  c) I(g(x)) = 8.000000
+Analyticky spocitana hodnota integralu = 9.333333
+Hranicni body pro skupinovy vyber: (0.000000; 0.160000; 0.640000; 1.440000; 2.560000; 4.000000) na kazdy interval je stejny pocet vzorku
+         N    vzork_plochy     s      delta    vzork_funkce     s      delta    fce_skup_vyb     s      delta   vyjmuti_casti     s      delta
+        10   8.400000   1.738965   0.933333   8.501572   0.616279   0.831762   9.159068   0.072029   0.174265   9.493803   0.501071   0.160470
+       100   8.880000   0.526361   0.453333   9.538897   0.174350   0.205564   9.410973   0.049880   0.077639   9.323998   0.147066   0.009335
+     10000   9.400800   0.049431   0.067467   9.354855   0.018855   0.021522   9.342021   0.005310   0.008688   9.326158   0.014565   0.007175
+   1000000   9.346668   0.004980   0.013335   9.334146   0.001886   0.000813   9.333573   0.000528   0.000240   9.332974   0.001460   0.000359
+  10000000   9.333516   0.001578   0.000183   9.332843   0.000596   0.000491   9.333128   0.000167   0.000206   9.333354   0.000462   0.000020
+
+Jdeme integrovat funkci f(x) = e^x + 2x na intervalu [0.000000; 1.000000]
+Na intervalu by melo platit: a) f(x) <= 5.000000  b) g(x) = 3.65x + 0.8 <= f(x)  c) I(g(x)) = 2.625000
+Analyticky spocitana hodnota integralu = 2.718282
+Hranicni body pro skupinovy vyber: (0.000000; 0.240000; 0.460000; 0.660000; 0.840000; 1.000000) na kazdy interval je stejny pocet vzorku
+         N    vzork_plochy     s      delta    vzork_funkce     s      delta    fce_skup_vyb     s      delta   vyjmuti_casti     s      delta
+        10   2.000000   0.774597   0.718282   2.261741   0.299134   0.456540   2.623953   0.028849   0.094328   2.714447   0.033326   0.003835
+       100   2.600000   0.249800   0.118282   2.817859   0.107365   0.099578   2.734116   0.020897   0.015834   2.719812   0.011558   0.001530
+     10000   2.745500   0.024879   0.027218   2.732341   0.010743   0.014060   2.720600   0.002186   0.002318   2.719248   0.001142   0.000967
+   1000000   2.721620   0.002490   0.003338   2.718818   0.001067   0.000536   2.718392   0.000218   0.000110   2.718283   0.000113   0.000001
+  10000000   2.718317   0.000788   0.000036   2.718059   0.000337   0.000223   2.718247   0.000069   0.000035   2.718292   0.000036   0.000010
+
+Jdeme integrovat funkci f(x, y) = 8 - x^2 - y^2 na intervalu (0.000000; 0.000000) az (0.250000, 0.250000)
+Na intervalu ma platit: 0 <= f(x, y) <= 8.000000
+Analyticky spocitana hodnota integralu = 0.497396
+         N   vzork_plochy      s      delta
+        10   0.500000   0.000000   0.002604
+       100   0.495000   0.004975   0.002396
+     10000   0.497300   0.000366   0.000096
+   1000000   0.497441   0.000036   0.000045
+  10000000   0.497415   0.000011   0.000020
+
+
+Diskuze
+-------
+
+Všechny jednorozměrné integrační metody dokázaly uspokojivě aproximovat skutečnou hodnotu integrálu,
+odhad jejich odchylky (s) klesal ve shodě s teorií přibližně jako funkce konst./sqrt(N); skutečné
+odchylky (delta) byly povětšinou menší než jejich odhady a byly přibližně stejného řádu; vzorkování
+plochy vykazovalo nejvyšší "náhodnost", kde se odhad odchylky v některých případ výrazně a
+nepředvídatelně lišil od odchylky skutečné.
+
+U metody vzorkování funkce se skupinovým výběrem byly intervaly zvoleny tak, aby bylo hustěji
+vzorkováno v oblastech, kde funkce více rostou; u vzorkování funkce vyjmutím hlavní části bylo
+použito lineárních odhadů, které se co nejvíce blíží integrandu. Obě vylepšení metody vzorkování
+funkce daly lepší výsledky než původní algoritmus, u vzorkování se skupinovým výběrem došlo i ke
+snížení odhadu odchylky, zatímco u vzorkování s vyjmutím hlavní části došlo pouze ke snížení
+skutečné odchylky, nikoliv jejího odhadu.
+
+Vícerozměrné integrování metodou vzorkování plochy též dalo dobré výsledky, jejichž odhadovaná chyba
+se s rostoucím N snižovala nepřímo úměrně odmocnině z N; skutečná chyba zhruba odpovídala svému
+odhadu. Za povšimnutí stojí anomálie u případu N=10, kde je odhad odchylky nulový a odhad integrálu
+dává objem hranolu, ve kterém se integrovalo. Je to způsobeno tím, že všechny vzorky padly pod graf
+funkce, neměly tedy žádnou varianci a metoda vrátila maximální možnou hodnotu integrálu.

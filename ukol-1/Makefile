@@ -5,7 +5,7 @@ SRC=main.c integraly.c random.c funkce.c
 OBJ=main.o integraly.o random.o funkce.o
 
 # implicit switches for gcc
-CFLAGS=-O2 -pipe -Wall -Wextra -ggdb
+CFLAGS=-O2 -pipe -Wall -Wextra
 
 # switches for linker
 LDFLAGS=-lm

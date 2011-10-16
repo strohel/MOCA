@@ -64,7 +64,7 @@ struct funkce_nd func_nd = {
 	2,  /* dimenze definicniho oboru */
 	f_3,  /* fce vracejici hodnotu, rozmer pole musi byt presne dim */
 	f_3_a, f_3_b,  /* vicerozmerny interval, na kterem pocitame (integral) */
-	767.0/384,     /* skutecna (presna) hodnota integralu z f predpocitana analyticky */
+	191.0/384,     /* skutecna (presna) hodnota integralu z f predpocitana analyticky */
 	8.0,  /* konstanta omezujici f na [a; b] */
 	"8 - x^2 - y^2",  /* jmeno pro hezci vypisy */
 };
