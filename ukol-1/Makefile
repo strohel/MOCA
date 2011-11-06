@@ -1,32 +1,29 @@
-program=integraly
+program = integraly
 
-HEAD=integraly.h random.h funkce.h
-SRC=main.c integraly.c random.c funkce.c
-OBJ=main.o integraly.o random.o funkce.o
+HEAD := $(wildcard *.h)
+SRC := $(wildcard *.c)
+OBJ := $(patsubst %.c,%.o,$(SRC))
 
 # implicit switches for gcc
-CFLAGS=-O2 -pipe -Wall -Wextra
+CFLAGS = -O2 -pipe -Wall -Wextra
 
 # switches for linker
-LDFLAGS=-lm
+LDFLAGS = -lm
 
 # compiler
-CC=gcc
-#CC=g++
+CC = gcc
+#CC = g++
 
-# build, install, uninstall, clean a distrib do not have a file on their own
-.PHONY: build
+# clean does not have a file on its own
 .PHONY: clean
 
-# default target
-build: ${program}
+# also a default target
+${program}: ${OBJ}
+	$(CC) $(LDFLAGS) ${OBJ} -o ${program}
 
 # cleans files form compilation
 clean:
 	rm -f ${OBJ} ${program}
-
-${program}: ${OBJ}
-	$(CC) $(LDFLAGS) ${OBJ} -o ${program}
 
 # every object file depends on all header files
 ${OBJ}: ${HEAD}
