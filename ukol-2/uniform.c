@@ -2,8 +2,7 @@
 
 #include <stdlib.h>
 
-
-double uniform_01()
+inline double uniform_01()
 {
 	return ((double) rand()) / ((double) RAND_MAX);
 }

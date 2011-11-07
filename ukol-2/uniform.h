@@ -4,6 +4,6 @@
 /**
  * Vradi nahodnou hodnotu mezi 0 a 1
  */
-double uniform_01();
+inline double uniform_01();
 
 #endif
