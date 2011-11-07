@@ -34,7 +34,7 @@ int main(void)
 	double mean, variance, N_inverse;
 
 	/* hlavicka */
-	printf("    distribuce,       N,   metoda,    prumer,  odchylka,       cas, soubor\n");
+	printf("    distribuce,       N,     metoda,    prumer,  odchylka,       cas, soubor\n");
 
 	snprintf(distribution, 30, "binom(%.2f;%i)", p, n);
 	for(i = 0; i < N_count; i++) {
@@ -72,7 +72,7 @@ int main(void)
 			}
 			variance -= mean*mean;  /* ve for cyklu se spocital NEcentralni moment, centralizujme */
 
-			printf("%14s, %7i, %8s, %9f, %9f, %8fs, %s\n", distribution, N[i], method,
+			printf("%14s, %7i, %10s, %9f, %9f, %8fs, %s\n", distribution, N[i], method,
 			       mean, sqrt(variance), time_difference(&start_time, &stop_time), filename);
 
 			/* uklid */

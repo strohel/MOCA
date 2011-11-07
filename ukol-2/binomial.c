@@ -186,8 +186,41 @@ unsigned int *reindexed_binomial(double p, unsigned int n, unsigned int N)
 	return ret;
 }
 
+unsigned int *binary_search_binomial(double p, unsigned int n, unsigned int N)
+{
+	unsigned int *ret = malloc(N * sizeof(unsigned int));
+	double *intervals = binomial_intervals(p, n);
+	unsigned int i, left, right, mid;
+	double random;
+
+	// mame generovat N cisel
+	for(i = 0; i < N; i++) {
+		/* vezmeme jeden vzorek z U(0, 1): */
+		random = uniform_01();
+		/* kvuli ochrane proti nekonecne smycce radsi overime, zda jsme spravne: */
+		assert(random >= 0.0 && random <= 1.0);
+
+		/* najdeme nejmensi takove k, ze random <= intervals[k], a to binarnim delenim */
+		left = 0;
+		right = n;
+		while(right > left) {
+			mid = (right + left) / 2;
+			if(random <= intervals[mid])
+				right = mid;
+			else
+				left = (right + left + 1) / 2;
+		}
+
+		ret[i] = right;
+	}
+
+	free(intervals);
+	return ret;
+}
+
 binomial_generator binomial_generators[] = {
 	{basic_binomial, "zakladni"},
 	{reindexed_binomial, "preindex"},
+	{binary_search_binomial, "bin_search"},
 };
 unsigned int binomial_generators_count = sizeof(binomial_generators)/sizeof(binomial_generator);
