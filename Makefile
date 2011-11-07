@@ -1,6 +1,8 @@
 SUBDIRS = ukol-1 ukol-2
 
-.PHONY: $(SUBDIRS)
+.PHONY: all $(SUBDIRS)
+
+all: $(SUBDIRS)
 
 $(SUBDIRS):
 	$(MAKE) -C $@
