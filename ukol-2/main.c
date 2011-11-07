@@ -24,7 +24,7 @@ int main(void)
 
 	/* parametry pro binomicke rozdeleni: */
 	unsigned int n = 20;
-	double p = 0.75;
+	double p = 0.7;
 
 	/* pomocne promenne: */
 	unsigned int j, i, k, *result_discrete;
@@ -56,9 +56,9 @@ int main(void)
 
 			/* vlastni generovani */
 			srand(42);
-			clock_gettime(CLOCK_REALTIME, &start_time);
+			clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start_time);
 			result_discrete = binomial_generators[j].generator(p, n, N[i]);
-			clock_gettime(CLOCK_REALTIME, &stop_time);
+			clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &stop_time);
 
 			/* zpracovani vysledku */
 			mean = 0;
