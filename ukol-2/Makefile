@@ -8,7 +8,7 @@ OBJ := $(patsubst %.c,%.o,$(SRC))
 CFLAGS = -O2 -pipe -Wall -Wextra
 
 # switches for linker
-LDFLAGS = -lm
+LDFLAGS = -lm -lrt
 
 # compiler
 CC = gcc

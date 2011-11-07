@@ -1,5 +1,8 @@
 #include "binomial.h"
 
+#include "uniform.h"
+
+#include <assert.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,6 +36,9 @@ static double *binomial_intervals(double p, unsigned int n)
 		sum += binom_coef(n, k) * pow(p, k) * pow(1-p, n-k);
 		ret[k] = sum;
 	}
+	/* nastavime natvrdo jednicku, aby to neudelalo jinde nekonecnou smycku kvuli
+	 * zaokrouhovacim chybam */
+	ret[n] = 1.0;
 	return ret;
 }
 
@@ -40,13 +46,22 @@ unsigned int *basic_binomial(double p, unsigned int n, unsigned int N)
 {
 	unsigned int *ret = malloc(N * sizeof(unsigned int));
 	double *intervals = binomial_intervals(p, n);
-	unsigned int i;
+	unsigned int i, k;
+	double random;
 
-	fprintf(stderr, "intervals = {");
-	for(i = 0; i < n + 1; i++) {
-		fprintf(stderr, "%f ", intervals[i]);
+	// mame generovat N cisel
+	for(i = 0; i < N; i++) {
+		/* vezmeme jeden vzorek z U(0, 1): */
+		random = uniform_01();
+		/* kvuli ochrane proti nekonecne smycce radsi overime, zda jsme spravne: */
+		assert(random >= 0.0 && random <= 1.0);
+		/* najdeme nejmensi takove k, ze random <= intervals[k]
+		 * urcite plati 0 <= k <= n, protoze intervals[n] == 1 a 0 <= rand <= 1 */ 
+		for(k = 0; random > intervals[k]; k++) {
+			// nic na praci, vse je napsano ve for klauzuli
+		}
+		ret[i] = k;
 	}
-	fprintf(stderr, "}\n");
 
 	free(intervals);
 	return ret;
