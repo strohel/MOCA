@@ -51,7 +51,7 @@ int main(void)
 			if(!outfile) {
 				perror("Nepovedlo se otevrit soubor v aktualnim adresari pro zapis");
 				free(filename);
-				break;
+				continue;
 			}
 
 			/* vlastni generovani */
@@ -61,12 +61,12 @@ int main(void)
 			clock_gettime(CLOCK_REALTIME, &stop_time);
 
 			/* zpracovani vysledku */
-			         sum = 0;
-			         sum_sq = 0;
+			sum = 0;
+			sum_sq = 0;
 			for(k = 0; k < N[i]; k++) {
 				fprintf(outfile, "%i\n", result_discrete[k]);
-				            sum += result_discrete[k];
-				            sum_sq += result_discrete[k] * result_discrete[k];
+				sum += result_discrete[k];
+				sum_sq += result_discrete[k] * result_discrete[k];
 			}
 			mean = sum / N[i];
 			variance = sum_sq / N[i] - sum * sum;
