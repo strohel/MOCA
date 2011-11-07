@@ -45,7 +45,7 @@ static double *binomial_intervals(double p, unsigned int n)
 	return ret;
 }
 
-static void print_intervals(const double *intervals, unsigned int n)
+void print_intervals(const double *intervals, unsigned int n)
 {
 	unsigned int i;
 	fprintf(stderr, "{");
@@ -100,7 +100,7 @@ static unsigned int *reorder_intervals(double *intervals, unsigned int n)
 	right = max_interval_index + 1; /* kandidat na dalsi nejdelsi interval */
 	/* v kazdem kroku pridame do intervalu a do indexu dalsi nejdelsi interval */
 	for(i = 1; i < n + 1; i++) {
-		if(right <= n)
+		if(right <= (int) n)
 			curr_len_right = orig_intervals[right+1] - orig_intervals[right];
 		else
 			curr_len_right = -1.0; /* znacka, ze doprava uz nelze */
@@ -121,7 +121,7 @@ static unsigned int *reorder_intervals(double *intervals, unsigned int n)
 			right++;
 		}
 	}
-	assert(left == -1 && right == n + 1);
+	assert(left == -1 && right == (int) n + 1);
 
 	DEBUG_CALL(fprintf(stderr, "Intervaly po setrizeni\n"));
 	DEBUG_CALL(print_intervals(intervals, n + 1));
@@ -220,7 +220,7 @@ unsigned int *binary_search_binomial(double p, unsigned int n, unsigned int N)
 
 binomial_generator binomial_generators[] = {
 	{basic_binomial, "zakladni"},
-	{reindexed_binomial, "preindex"},
+	{reindexed_binomial, "reindex"},
 	{binary_search_binomial, "bin_search"},
 };
 unsigned int binomial_generators_count = sizeof(binomial_generators)/sizeof(binomial_generator);
