@@ -28,17 +28,17 @@ int main(void)
 
 	/* pomocne promenne: */
 	unsigned int j, i, k, *result_discrete;
-	char *distribution, *method, count[20], *filename;
+	char distribution[30], *method, count[20], *filename;
 	FILE *outfile;
 	struct timespec start_time, stop_time;
-	double mean, variance, sum, sum_sq;
+	double mean, variance, N_inverse;
 
 	/* hlavicka */
-	printf("distribuce,       N,   metoda,    prumer,  odchylka,       cas, soubor\n");
+	printf("    distribuce,       N,   metoda,    prumer,  odchylka,       cas, soubor\n");
 
-	distribution = "binomicke";
+	snprintf(distribution, 30, "binom(%.2f;%i)", p, n);
 	for(i = 0; i < N_count; i++) {
-		snprintf(count, 20, "%i", N[i]);
+		snprintf(count, 20, "%i", N[i]);  /* do promenne count zapiseme textove pocet kroku */
 		for(j = 0; j < binomial_generators_count; j++) {
 			/* priprava */
 			method = binomial_generators[j].name;
@@ -46,7 +46,7 @@ int main(void)
 			                + strlen(count) + 1 /* - */
 			                + strlen(method)
 			                + 4 /* .txt */ + 1 /* \0 */);
-			sprintf(filename, "%s-%s-%s.txt", distribution, count, method);
+			sprintf(filename, "%s-%s-%s.txt", distribution, count, method); /* do filename zapise jmeno souboru */
 			outfile = fopen(filename, "w");
 			if(!outfile) {
 				perror("Nepovedlo se otevrit soubor v aktualnim adresari pro zapis");
@@ -61,17 +61,18 @@ int main(void)
 			clock_gettime(CLOCK_REALTIME, &stop_time);
 
 			/* zpracovani vysledku */
-			sum = 0;
-			sum_sq = 0;
+			mean = 0;
+			variance = 0;
+			N_inverse = 1.0/N[i];  /* nasobeni je rychlejsi nez deleni, takze delme jen jednou */
 			for(k = 0; k < N[i]; k++) {
 				fprintf(outfile, "%i\n", result_discrete[k]);
-				sum += result_discrete[k];
-				sum_sq += result_discrete[k] * result_discrete[k];
+				/* v obou pripadech nasobime 1/N uz tady aby to nepreteklo: */
+				mean += N_inverse * result_discrete[k];
+				variance += N_inverse * result_discrete[k] * result_discrete[k];
 			}
-			mean = sum / N[i];
-			variance = sum_sq / N[i] - sum * sum;
+			variance -= mean*mean;  /* ve for cyklu se spocital NEcentralni moment, centralizujme */
 
-			printf("%10s, %7i, %8s, %9f, %9f, %8fs, %s\n", distribution, N[i], method,
+			printf("%14s, %7i, %8s, %9f, %9f, %8fs, %s\n", distribution, N[i], method,
 			       mean, sqrt(variance), time_difference(&start_time, &stop_time), filename);
 
 			/* uklid */
