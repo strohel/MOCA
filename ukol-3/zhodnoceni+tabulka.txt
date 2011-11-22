@@ -1,0 +1,54 @@
+Ukázkový výstup programu
+========================
+priklad,       N,  generator,    prumer,  odchylka, soubor
+ U(0,1),     100,  libc_rand,  0.514991,  0.311813, U(0,1)-100-libc_rand.txt
+ U(0,1),     100,  lin_congr,  0.500910,  0.299893, U(0,1)-100-lin_congr.txt
+ U(0,1),     100,   mersenne,  0.591913,  0.285729, U(0,1)-100-mersenne.txt
+ U(0,1),   10000,  libc_rand,  0.495133,  0.288115, U(0,1)-10000-libc_rand.txt
+ U(0,1),   10000,  lin_congr,  0.504040,  0.290525, U(0,1)-10000-lin_congr.txt
+ U(0,1),   10000,   mersenne,  0.499416,  0.291382, U(0,1)-10000-mersenne.txt
+ U(0,1), 1000000,  libc_rand,  0.500126,  0.288515, U(0,1)-1000000-libc_rand.txt
+ U(0,1), 1000000,  lin_congr,  0.500461,  0.288850, U(0,1)-1000000-lin_congr.txt
+ U(0,1), 1000000,   mersenne,  0.500067,  0.288576, U(0,1)-1000000-mersenne.txt
+
+priklad,       N,  generator,    prumer,  odchylka, skutecna odchylka
+     pi,     100,  libc_rand,  3.000000,  0.122474, 0.141593
+     pi,     100,  lin_congr,  2.640000,  0.121589, 0.501593
+     pi,     100,   mersenne,  2.760000,  0.122082, 0.381593
+     pi,   10000,  libc_rand,  3.175800,  0.012226, 0.034207
+     pi,   10000,  lin_congr,  3.129600,  0.012236, 0.011993
+     pi,   10000,   mersenne,  3.197400,  0.012221, 0.055807
+     pi, 1000000,  libc_rand,  3.145932,  0.001223, 0.004339
+     pi, 1000000,  lin_congr,  3.140034,  0.001223, 0.001559
+     pi, 1000000,   mersenne,  3.142362,  0.001223, 0.000769
+
+
+Zhodnoceni
+==========
+
+Byl implementován lineární kongruentní generátor (identifikátor lin_congr), mersennský
+twister (mersenne) a pro srovnání byla do tabulky zařazena funkce rand() z libc.
+
+Implementovaný lineární kongruenční generátor pracuje v aritmetice modulo 2^64, tedy v
+nativním bez-znaménkovém celočíselném typu na 64-bitových strojích. Parametry jsou následující:
+a = 347
+b = 874329843209847
+Parametry byly zvoleny tak, aby semínko po několika iteracích přeteklo hodnotu 2^64 a tedy
+aby generátor aproximoval U(0,1) i pro menší počet vzorku. Parametry dále splňují nutnou
+a postačující podmínku pro maximální periodu [Knuth] a dle výběrového průměru,
+rozptylu a histogramu tento generátor velmi slušně aproximuje rovnoměrné rozdělení na
+intervalu [0, 1).
+
+Implementovaný Mersennský twister pracuje v 32bitové aritmetice, kde dolní maska má 31 bitů.
+Ostatní parametry byly zvoleny dle MT19937 (konvenční značení proměnných):
+m = 397;
+a = 0x9908B0DF;
+u = 11;
+s = 7, b = 0x9D2C5680;
+t = 15, c = 0xEFC60000;
+l = 18;
+Mersennský twister dává pro N rovno 10000 a vyšší velmi dobré výsledky, které se ve výběrovém
+průměru, rozptylu a histogramu shodují s teorií.
+
+Pro odhad Ludolfova čísla daly oba generátory dobré výsledky, kde výběrová odchylka klesala
+s rostoucím N dle teorie (jako k/sqrt(N)) a zhruba odpovídala skutečné chybě odhadu.

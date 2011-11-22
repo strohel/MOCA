@@ -1,4 +1,4 @@
-SUBDIRS = ukol-1 ukol-2
+SUBDIRS = ukol-1 ukol-2 ukol-3
 
 .PHONY: all $(SUBDIRS)
 
